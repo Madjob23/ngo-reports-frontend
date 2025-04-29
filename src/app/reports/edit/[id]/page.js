@@ -4,7 +4,7 @@ import connectDB from '@/lib/db';
 import Report from '@/models/Report';
 import EditForm from './EditForm';
 
-export default async function EditReportPage({ params }) {
+export default async function ViewReportPage({ params }) {
   const { id } =  await params;
   
   const user = await getCurrentUser();
@@ -21,7 +21,7 @@ export default async function EditReportPage({ params }) {
     notFound();
   }
   
-  // Check if NGO is trying to edit someone else's report
+  // Check if NGO is trying to view another NGO's report
   if (user.role === 'ngo' && report.ngoId !== user.ngoId) {
     redirect('/reports');
   }

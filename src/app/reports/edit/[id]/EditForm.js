@@ -1,155 +1,85 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
-import { updateReport } from '@/app/actions';
+import { formatCurrency } from '@/lib/utils';
 
 export default function EditForm({ report, user }) {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      ngoId: report.ngoId,
-      month: report.month,
-      peopleHelped: report.peopleHelped,
-      eventsConducted: report.eventsConducted,
-      fundsUtilized: report.fundsUtilized,
-    },
-  });
-
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    
-    try {
-      const formData = new FormData();
-      formData.append('peopleHelped', data.peopleHelped);
-      formData.append('eventsConducted', data.eventsConducted);
-      formData.append('fundsUtilized', data.fundsUtilized);
-      
-      const result = await updateReport(report._id, formData);
-      
-      if (result.success) {
-        toast.success('Report Updated', {
-          description: 'The report has been updated successfully.'
-        });
-        router.push('/reports');
-      } else {
-        toast.error('Update Failed', {
-          description: result.message || 'An error occurred while updating the report.'
-        });
-      }
-    } catch (error) {
-      toast.error('Update Failed', {
-        description: 'An unexpected error occurred.'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Edit Report</CardTitle>
+        <CardTitle>View Report</CardTitle>
         <CardDescription>
-          Update impact metrics for {report.month}
+          Report details for {report.month}
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="ngoId">NGO ID</Label>
-            <Input
-              id="ngoId"
-              value={report.ngoId}
-              disabled={true} // Cannot change NGO ID
-              readOnly
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="month">Month</Label>
-            <Input
-              id="month"
-              type="month"
-              value={report.month}
-              disabled={true} // Cannot change month
-              readOnly
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="peopleHelped">People Helped</Label>
-            <Input
-              id="peopleHelped"
-              type="number"
-              min="0"
-              {...register('peopleHelped', { 
-                required: 'This field is required',
-                min: { value: 0, message: 'Value must be 0 or greater' },
-                valueAsNumber: true
-              })}
-            />
-            {errors.peopleHelped && (
-              <p className="text-sm text-red-500">{errors.peopleHelped.message}</p>
-            )}
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="eventsConducted">Events Conducted</Label>
-            <Input
-              id="eventsConducted"
-              type="number"
-              min="0"
-              {...register('eventsConducted', { 
-                required: 'This field is required',
-                min: { value: 0, message: 'Value must be 0 or greater' },
-                valueAsNumber: true
-              })}
-            />
-            {errors.eventsConducted && (
-              <p className="text-sm text-red-500">{errors.eventsConducted.message}</p>
-            )}
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="fundsUtilized">Funds Utilized</Label>
-            <Input
-              id="fundsUtilized"
-              type="number"
-              min="0"
-              step="0.01"
-              {...register('fundsUtilized', { 
-                required: 'This field is required',
-                min: { value: 0, message: 'Value must be 0 or greater' },
-                valueAsNumber: true
-              })}
-            />
-            {errors.fundsUtilized && (
-              <p className="text-sm text-red-500">{errors.fundsUtilized.message}</p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Updating...' : 'Update Report'}
-          </Button>
-        </CardFooter>
-      </form>
+      
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="ngoId">NGO ID</Label>
+          <Input
+            id="ngoId"
+            value={report.ngoId}
+            disabled={true}
+            readOnly
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="month">Month</Label>
+          <Input
+            id="month"
+            type="month"
+            value={report.month}
+            disabled={true}
+            readOnly
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="peopleHelped">People Helped</Label>
+          <Input
+            id="peopleHelped"
+            type="number"
+            value={report.peopleHelped}
+            disabled={true}
+            readOnly
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="eventsConducted">Events Conducted</Label>
+          <Input
+            id="eventsConducted"
+            type="number"
+            value={report.eventsConducted}
+            disabled={true}
+            readOnly
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="fundsUtilized">Funds Utilized</Label>
+          <Input
+            id="fundsUtilized"
+            type="text"
+            value={formatCurrency(report.fundsUtilized)}
+            disabled={true}
+            readOnly
+          />
+        </div>
+      </CardContent>
+      
+      <CardFooter className="flex justify-center">
+        <Button type="button" variant="outline" onClick={() => router.back()} className="w-full">
+          Back to Reports
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

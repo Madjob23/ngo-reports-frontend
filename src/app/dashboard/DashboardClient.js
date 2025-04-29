@@ -1,28 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { formatCurrency } from '@/lib/utils';
 
 export default function DashboardClient({ initialData, initialMonth, reportsForMonth = [], availableMonths = [] }) {
   const router = useRouter();
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
   const [dashboardData, setDashboardData] = useState(initialData);
   
+  // Add this useEffect to update the dashboard data when initialData changes
+  useEffect(() => {
+    setDashboardData(initialData);
+  }, [initialData]);
+  
   const handleMonthChange = (e) => {
     const newMonth = e.target.value;
     setSelectedMonth(newMonth);
     router.push(`/dashboard${newMonth ? `?month=${newMonth}` : ''}`);
-  };
-  
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2
-    }).format(amount);
   };
   
   return (

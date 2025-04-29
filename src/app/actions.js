@@ -319,85 +319,13 @@ export async function submitReport(formData) {
 }
 
 export async function updateReport(id, formData) {
-  const session = await getSession();
-  if (!session) {
-    return { success: false, message: 'Not authenticated' };
-  }
-  
-  try {
-    await connectDB();
-    
-    const report = await Report.findById(id);
-    if (!report) {
-      return { success: false, message: 'Report not found' };
-    }
-    
-    const user = await getCurrentUser();
-    
-    if (user.role === 'ngo' && user.ngoId !== report.ngoId) {
-      return { success: false, message: 'You can only update your own NGO reports' };
-    }
-    
-    const peopleHelped = parseInt(formData.get('peopleHelped'));
-    const eventsConducted = parseInt(formData.get('eventsConducted'));
-    const fundsUtilized = parseFloat(formData.get('fundsUtilized'));
-    
-    const updatedReport = await Report.findByIdAndUpdate(
-      id,
-      {
-        peopleHelped,
-        eventsConducted,
-        fundsUtilized
-      },
-      { new: true, runValidators: true }
-    );
-    
-    revalidatePath('/reports');
-    return { 
-      success: true,
-      report: {
-        _id: updatedReport._id.toString(),
-        ngoId: updatedReport.ngoId,
-        month: updatedReport.month,
-        peopleHelped: updatedReport.peopleHelped,
-        eventsConducted: updatedReport.eventsConducted,
-        fundsUtilized: updatedReport.fundsUtilized
-      }
-    };
-  } catch (error) {
-    console.error(error);
-    return { success: false, message: error.message };
-  }
+  // Disabled - No editing allowed
+  return { success: false, message: 'Editing reports is disabled' };
 }
 
 export async function deleteReport(id) {
-  const session = await getSession();
-  if (!session) {
-    return { success: false, message: 'Not authenticated' };
-  }
-  
-  try {
-    await connectDB();
-    
-    const user = await getCurrentUser();
-    
-    if (user.role !== 'admin') {
-      return { success: false, message: 'Only admin can delete reports' };
-    }
-    
-    const report = await Report.findById(id);
-    if (!report) {
-      return { success: false, message: 'Report not found' };
-    }
-    
-    await report.deleteOne();
-    
-    revalidatePath('/reports');
-    return { success: true };
-  } catch (error) {
-    console.error(error);
-    return { success: false, message: error.message };
-  }
+  // Disabled - No deletion allowed
+  return { success: false, message: 'Deleting reports is disabled' };
 }
 
 export async function getDashboardData(month = '') {

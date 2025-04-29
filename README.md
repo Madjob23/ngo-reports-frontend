@@ -1,170 +1,106 @@
-# NGO Impact Reporting System
+# NGO Impact Reports
 
-A web application for NGOs to submit monthly impact reports and for administrators to view aggregated data via a dashboard.
+A comprehensive platform for NGOs to submit and track their impact metrics. The application allows NGOs to report their monthly activities, including people helped, events conducted, and funds utilized. Administrators can view a dashboard with aggregated data across all NGOs and examine individual reports.
 
-## Project Overview
+## Live Demo
 
-This full-stack application consists of:
+**Deployed Link**: [https://ngo-impact-reports.vercel.app/](https://ngo-impact-reports.vercel.app/)
 
-1. **Backend**: Node.js with Express and MongoDB
-2. **Frontend**: Next.js with TailwindCSS and Shadcn UI components
+## Tech Stack
+
+### Frontend
+- **Next.js 14**: App Router for server components and client-side rendering
+- **React**: UI library for building the user interface
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **shadcn/ui**: Reusable UI components built with Radix UI and Tailwind
+- **React Hook Form**: Form handling and validation
+- **Sonner**: Toast notifications
+- **Next Auth**: Authentication and session management
+- **Zustand**: State management
+
+### Backend
+- **MongoDB**: NoSQL database for storing user data and reports
+- **Mongoose**: MongoDB object modeling for Node.js
+- **NextAuth.js**: Authentication framework
+- **API Routes**: Next.js API routes for server endpoints
+
+### Deployment
+- **Vercel**: Hosting platform for the application
 
 ## Features
 
-- **Authentication**: Secure login for NGO users and administrators
-- **Report Submission**: Form for NGOs to submit monthly impact metrics
-- **Report Management**: View, edit, and delete submitted reports
-- **Admin Dashboard**: View aggregated statistics for selected months
-- **Responsive Design**: Works on desktop and mobile devices
+- **User Authentication**: Secure login for NGOs and administrators
+- **Role-Based Access Control**: Different permissions for NGOs and administrators
+- **Report Submission**: NGOs can submit monthly impact reports
+- **Report Management**: NGOs can edit and delete their own reports
+- **Dashboard**: Comprehensive view of aggregated impact metrics
+- **Month Filtering**: Filter reports and dashboard data by month
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
 ## Setup Instructions
 
-### Backend Setup
+### Prerequisites
+- Node.js (v18 or newer)
+- npm or yarn
+- MongoDB database (local or Atlas)
 
-1. **Clone the repository and navigate to the backend folder**:
-   ```bash
-   git clone <repository-url>
-   cd ngo-impact-backend
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Create a .env file** with the following variables:
-   ```
-   MONGODB_URI=your_mongodb_connection_string
-   PORT=5000
-   JWT_SECRET=your_jwt_secret_key
-   ```
-
-4. **Create an admin user**:
-   ```bash
-   npm run create-admin
-   ```
-   This will create an admin user with:
-   - Username: admin
-   - Password: admin123
-
-5. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
-   The backend server will run on http://localhost:5000
-
-### Frontend Setup
-
-1. **Navigate to the frontend folder**:
-   ```bash
-   cd ../ngo-impact-frontend
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Create a .env.local file** with:
-   ```
-   NEXT_PUBLIC_API_URL=http://localhost:5000/api
-   ```
-
-4. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
-   The frontend will be available at http://localhost:3000
-
-## Using the Application
-
-### Login Credentials
-
-- **Admin User**:
-  - Username: admin
-  - Password: admin123
-
-- **NGO User**:
-  - NGO users can be created by the admin through the application
-
-### NGO User Workflow
-
-1. Log in with NGO credentials
-2. Submit monthly reports using the submission form
-3. View and edit past submissions
-
-### Admin Workflow
-
-1. Log in with admin credentials
-2. View the dashboard to see aggregated metrics
-3. Filter data by month
-4. View all reports from all NGOs
-5. Create new NGO users
-
-## Project Structure
-
-### Backend
+### Environment Variables
+Create a `.env.local` file in the root directory with the following variables:
 
 ```
-ngo-impact-backend/
-├── config/         # Database configuration
-├── controllers/    # Request handlers
-├── middleware/     # Authentication middleware
-├── models/         # Database models
-├── routes/         # API routes
-├── scripts/        # Utility scripts
-├── .env            # Environment variables
-├── index.js        # Main application file
-└── package.json    # Dependencies
+# MongoDB
+MONGODB_URI=your_mongodb_connection_string
+
+# NextAuth
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret
+
+# Optional: for production
+# VERCEL_URL=your_vercel_url
 ```
 
-### Frontend
+### Installation
 
-```
-ngo-impact-frontend/
-├── public/            # Static files
-├── src/
-│   ├── app/           # Page components
-│   ├── components/    # Reusable UI components
-│   ├── services/      # API service functions
-│   └── store/         # State management
-├── .env.local         # Environment variables
-└── package.json       # Dependencies
+1. Clone the repository
+```bash
+git clone https://github.com/your-username/ngo-reports-frontend.git
+cd ngo-reports-frontend
 ```
 
-## API Endpoints
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
 
-### Authentication
-- `POST /api/auth/login` - Login
-- `POST /api/auth/register` - Register new user (admin only)
-- `GET /api/auth/profile` - Get current user profile
+3. Run the development server
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-### Reports
-- `GET /api/reports` - Get all reports (filtered by NGO ID for NGO users)
-- `POST /api/reports` - Submit a new report
-- `GET /api/reports/:id` - Get a specific report
-- `PUT /api/reports/:id` - Update a report
-- `DELETE /api/reports/:id` - Delete a report (admin only)
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-### Dashboard
-- `GET /api/dashboard?month=YYYY-MM` - Get dashboard data for a specific month
+### Database Seeding (Optional)
+To seed the database with sample data:
 
-## Technologies Used
+```bash
+npm run seed
+# or
+yarn seed
+```
 
-- **Backend**:
-  - Node.js and Express
-  - MongoDB with Mongoose ODM
-  - JSON Web Tokens (JWT) for authentication
-  - bcryptjs for password hashing
+## Deployment
 
-- **Frontend**:
-  - Next.js 14 with App Router
-  - TailwindCSS for styling
-  - Shadcn UI components
-  - React Hook Form for form handling
-  - React Query for data fetching
-  - Zustand for state management
+The application is set up for easy deployment on Vercel:
 
-## Credits
+1. Fork this repository
+2. Connect your fork to Vercel
+3. Set up the environment variables in Vercel project settings
+4. Deploy!
 
-Created as a project for tracking and reporting NGO impact across India.
+## License
+
+MIT

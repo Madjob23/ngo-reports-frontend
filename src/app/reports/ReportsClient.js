@@ -4,47 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { deleteReport } from '@/app/actions';
+import { formatCurrency } from '@/lib/utils';
 
 export default function ReportsClient({ reports, initialMonth, isAdmin }) {
   const router = useRouter();
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
-  const [isDeleting, setIsDeleting] = useState(false);
   
   const handleMonthChange = (e) => {
     const newMonth = e.target.value;
     setSelectedMonth(newMonth);
     router.push(`/reports${newMonth ? `?month=${newMonth}` : ''}`);
-  };
-  
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this report?')) {
-      return;
-    }
-    
-    setIsDeleting(true);
-    
-    try {
-      const result = await deleteReport(id);
-      
-      if (result.success) {
-        toast.success('Report Deleted', {
-          description: 'The report has been deleted successfully.'
-        });
-        router.refresh();
-      } else {
-        toast.error('Deletion Failed', {
-          description: result.message || 'An error occurred while deleting the report.'
-        });
-      }
-    } catch (error) {
-      toast.error('Deletion Failed', {
-        description: 'An unexpected error occurred.'
-      });
-    } finally {
-      setIsDeleting(false);
-    }
   };
   
   return (
@@ -64,6 +33,7 @@ export default function ReportsClient({ reports, initialMonth, isAdmin }) {
             />
           </div>
           
+          {/* Anyone can submit new reports */}
           <Button onClick={() => router.push('/reports/submit')}>
             Submit New Report
           </Button>
@@ -95,18 +65,8 @@ export default function ReportsClient({ reports, initialMonth, isAdmin }) {
                       size="sm"
                       onClick={() => router.push(`/reports/edit/${report._id}`)}
                     >
-                      Edit
+                      View
                     </Button>
-                    {isAdmin && (
-                      <Button 
-                        variant="destructive" 
-                        size="sm"
-                        onClick={() => handleDelete(report._id)}
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? 'Deleting...' : 'Delete'}
-                      </Button>
-                    )}
                   </div>
                 </div>
               </CardHeader>
@@ -122,7 +82,7 @@ export default function ReportsClient({ reports, initialMonth, isAdmin }) {
                   </div>
                   <div className="bg-purple-50 p-4 rounded-md">
                     <p className="text-sm text-gray-500">Funds Utilized</p>
-                    <p className="text-2xl font-bold">${report.fundsUtilized.toFixed(2)}</p>
+                    <p className="text-2xl font-bold">{formatCurrency(report.fundsUtilized)}</p>
                   </div>
                 </div>
               </CardContent>
