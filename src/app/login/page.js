@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import useAuthStore from '@/store/authStore';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,9 +10,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { login } from '@/app/actions';
-import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-export default function Login() {
+// Separate component that uses useSearchParams
+function LoginForm() {
   const { setAuth } = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -64,45 +65,52 @@ export default function Login() {
   };
 
   return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="username">Username</Label>
+          <Input
+            id="username"
+            placeholder="Enter your username"
+            {...register('username', { required: 'Username is required' })}
+          />
+          {errors.username && (
+            <p className="text-sm text-red-500">{errors.username.message}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            {...register('password', { required: 'Password is required' })}
+          />
+          {errors.password && (
+            <p className="text-sm text-red-500">{errors.password.message}</p>
+          )}
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
+        </Button>
+      </CardFooter>
+    </form>
+  );
+}
+
+// Main login page component
+export default function Login() {
+  return (
     <div className="flex items-center justify-center min-h-[80vh]">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">NGO Impact Reporting System</CardTitle>
           <CardDescription>Log in to access the system</CardDescription>
         </CardHeader>
-        <Suspense fallback={<div>Loading...</div>}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                placeholder="Enter your username"
-                {...register('username', { required: 'Username is required' })}
-              />
-              {errors.username && (
-                <p className="text-sm text-red-500">{errors.username.message}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                {...register('password', { required: 'Password is required' })}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
-              )}
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Logging in...' : 'Login'}
-            </Button>
-          </CardFooter>
-        </form>
+        <Suspense fallback={<div>Loading form...</div>}>
+          <LoginForm />
         </Suspense>
       </Card>
     </div>
