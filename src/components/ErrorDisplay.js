@@ -1,10 +1,9 @@
-// src/components/ErrorDisplay.js
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
-const ErrorDisplay = ({ 
+export default function ErrorDisplay({ 
   message = 'Something went wrong', 
   onRetry = null 
-}) => {
+}) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[300px] p-4 bg-red-50 border border-red-100 rounded-md">
       <svg
@@ -32,6 +31,4 @@ const ErrorDisplay = ({
       )}
     </div>
   );
-};
-
-export default ErrorDisplay;
+}

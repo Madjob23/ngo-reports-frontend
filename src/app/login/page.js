@@ -1,4 +1,3 @@
-// src/app/login/page.js
 'use client';
 
 import { useState } from 'react';
@@ -10,9 +9,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { login } from '@/app/actions';
 
 export default function Login() {
-  const { login } = useAuthStore();
+  const { setAuth } = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -31,26 +31,32 @@ export default function Login() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const result = await login(data.username, data.password);
+      const formData = new FormData();
+      formData.append('username', data.username);
+      formData.append('password', data.password);
+      
+      const result = await login(formData);
       
       if (result.success) {
+        // Update client-side auth state
+        setAuth(result.token, result.user);
+        
         toast.success('Login successful', {
           description: 'You have been logged in successfully.'
         });
         
-        // Redirect to the page they were trying to access, or dashboard
+        // Redirect to the page they were trying to access, or home
         const redirectTo = searchParams.get('from') || '/';
         router.push(redirectTo);
       } else {
         toast.error('Login failed', {
-          description: result.error,
+          description: result.message
         });
       }
     } catch (error) {
       toast.error('Login failed', {
-        description: result.error
+        description: 'An unexpected error occurred.'
       });
-      
     } finally {
       setIsLoading(false);
     }

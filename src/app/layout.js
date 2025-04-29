@@ -1,8 +1,6 @@
-// src/app/layout.js
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Toaster } from 'sonner';
-import Providers from './providers';
+import { Toaster } from '@/components/ui/sonner';
 import Navbar from '@/components/Navbar';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -16,13 +14,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <Navbar />
-          <main className="container mx-auto py-8 px-4">
-            {children}
-          </main>
-          <Toaster />
-        </Providers>
+        <Navbar />
+        <main className="container mx-auto py-8 px-4">
+          {children}
+        </main>
+        <Toaster />
       </body>
     </html>
   );

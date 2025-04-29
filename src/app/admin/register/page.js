@@ -1,20 +1,21 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
-import SubmitForm from './SubmitForm';
+import RegisterForm from './RegisterForm';
 
-export default async function SubmitReportPage() {
+export default async function RegisterPage() {
   const user = await getCurrentUser();
-
+  
   if (!user) {
     redirect('/login');
   }
-
-  // Convert user to a plain object
-  const plainUser = JSON.parse(JSON.stringify(user));
-
+  
+  if (user.role !== 'admin') {
+    redirect('/');
+  }
+  
   return (
     <div className="max-w-2xl mx-auto">
-      <SubmitForm user={plainUser} />
+      <RegisterForm />
     </div>
   );
 }

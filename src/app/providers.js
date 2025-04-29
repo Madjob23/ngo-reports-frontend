@@ -1,4 +1,3 @@
-// src/app/providers.js
 'use client';
 
 import { useState } from 'react';
