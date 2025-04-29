@@ -32,7 +32,6 @@ A comprehensive platform for NGOs to submit and track their impact metrics. The 
 - **User Authentication**: Secure login for NGOs and administrators
 - **Role-Based Access Control**: Different permissions for NGOs and administrators
 - **Report Submission**: NGOs can submit monthly impact reports
-- **Report Management**: NGOs can edit and delete their own reports
 - **Dashboard**: Comprehensive view of aggregated impact metrics
 - **Month Filtering**: Filter reports and dashboard data by month
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
@@ -100,7 +99,3 @@ The application is set up for easy deployment on Vercel:
 2. Connect your fork to Vercel
 3. Set up the environment variables in Vercel project settings
 4. Deploy!
-
-## License
-
-MIT
