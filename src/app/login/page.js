@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { login } from '@/app/actions';
+import { Suspense } from 'react';
 
 export default function Login() {
   const { setAuth } = useAuthStore();
@@ -69,6 +70,7 @@ export default function Login() {
           <CardTitle className="text-2xl">NGO Impact Reporting System</CardTitle>
           <CardDescription>Log in to access the system</CardDescription>
         </CardHeader>
+        <Suspense fallback={<div>Loading...</div>}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -101,6 +103,7 @@ export default function Login() {
             </Button>
           </CardFooter>
         </form>
+        </Suspense>
       </Card>
     </div>
   );
