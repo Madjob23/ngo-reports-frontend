@@ -1,103 +1,95 @@
-import Image from "next/image";
+// src/app/page.js
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import useAuthStore from '@/store/authStore';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
+  const { isAuthenticated, isAdmin, isNGO } = useAuthStore();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, router]);
+
+  const navigateTo = (path) => {
+    router.push(path);
+  };
+
+  if (!isAuthenticated()) {
+    return null; // Will be redirected to login
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8 text-center">NGO Impact Reporting System</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {isNGO() && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Submit Monthly Report</CardTitle>
+              <CardDescription>
+                Report your NGO&apos;s monthly impact metrics
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4">
+                Submit data about the number of people helped, events conducted,
+                and funds utilized during the month.
+              </p>
+              <Button onClick={() => navigateTo('/reports/submit')}>
+                Submit Report
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>View Reports</CardTitle>
+            <CardDescription>
+              {isAdmin() ? 'View reports from all NGOs' : 'View your submitted reports'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4">
+              {isAdmin() 
+                ? 'Access and manage reports submitted by all NGOs.'
+                : 'Review and edit your previously submitted reports.'
+              }
+            </p>
+            <Button onClick={() => navigateTo('/reports')}>
+              View Reports
+            </Button>
+          </CardContent>
+        </Card>
+        
+        {isAdmin() && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Dashboard</CardTitle>
+              <CardDescription>
+                View aggregated impact metrics
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4">
+                See total numbers for people helped, events conducted, and
+                funds utilized across all NGOs.
+              </p>
+              <Button onClick={() => navigateTo('/dashboard')}>
+                Go to Dashboard
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 }
