@@ -6,6 +6,8 @@ A comprehensive platform for NGOs to submit and track their impact metrics. The 
 
 **Deployed Link**: [https://ngo-impact-reports.vercel.app/](https://ngo-impact-reports.vercel.app/)
 
+## [Video Demo](https://drive.google.com/file/d/1N-rz3SCNQZj6nviwFiZGjlggjJDetmEB/view?usp=drive_web)
+
 ## Tech Stack
 
 ### Frontend
