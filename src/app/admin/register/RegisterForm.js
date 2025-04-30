@@ -64,7 +64,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Register New User</CardTitle>
         <CardDescription>
@@ -72,11 +72,12 @@ export default function RegisterForm() {
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
             <Input
               id="username"
+              className="w-full"
               {...register('username', { required: 'Username is required' })}
             />
             {errors.username && (
@@ -89,6 +90,7 @@ export default function RegisterForm() {
             <Input
               id="password"
               type="password"
+              className="w-full"
               {...register('password', { 
                 required: 'Password is required',
                 minLength: { value: 6, message: 'Password must be at least 6 characters' }
@@ -105,7 +107,7 @@ export default function RegisterForm() {
               value={selectedRole} 
               onValueChange={setSelectedRole}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
@@ -119,6 +121,7 @@ export default function RegisterForm() {
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
+              className="w-full"
               {...register('name', { required: 'Name is required' })}
             />
             {errors.name && (
@@ -131,6 +134,7 @@ export default function RegisterForm() {
               <Label htmlFor="ngoId">NGO ID</Label>
               <Input
                 id="ngoId"
+                className="w-full"
                 {...register('ngoId', { 
                   required: selectedRole === 'ngo' ? 'NGO ID is required for NGO users' : false
                 })}
@@ -141,11 +145,20 @@ export default function RegisterForm() {
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
+        <CardFooter className="flex flex-col sm:flex-row justify-between gap-3">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => router.back()}
+            className="w-full sm:w-auto"
+          >
             Cancel
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full sm:w-auto"
+          >
             {isSubmitting ? 'Registering...' : 'Register User'}
           </Button>
         </CardFooter>

@@ -5,7 +5,7 @@ import Report from '@/models/Report';
 import EditForm from './EditForm';
 
 export default async function ViewReportPage({ params }) {
-  const { id } =  await params;
+  const { id } = await params;
   
   const user = await getCurrentUser();
   
@@ -39,7 +39,7 @@ export default async function ViewReportPage({ params }) {
   };
   
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <EditForm report={serializedReport} user={user} />
     </div>
   );

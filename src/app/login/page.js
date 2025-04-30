@@ -66,12 +66,13 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5 px-4 sm:px-6">
         <div className="space-y-2">
           <Label htmlFor="username">Username</Label>
           <Input
             id="username"
             placeholder="Enter your username"
+            className="w-full"
             {...register('username', { required: 'Username is required' })}
           />
           {errors.username && (
@@ -84,6 +85,7 @@ function LoginForm() {
             id="password"
             type="password"
             placeholder="Enter your password"
+            className="w-full"
             {...register('password', { required: 'Password is required' })}
           />
           {errors.password && (
@@ -91,7 +93,7 @@ function LoginForm() {
           )}
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="px-4 sm:px-6 pt-2 pb-6">
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
         </Button>
@@ -103,13 +105,13 @@ function LoginForm() {
 // Main login page component
 export default function Login() {
   return (
-    <div className="flex items-center justify-center min-h-[80vh]">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">NGO Impact Reporting System</CardTitle>
+    <div className="flex items-center justify-center min-h-[80vh] p-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="text-center pb-2 pt-6">
+          <CardTitle className="text-xl sm:text-2xl">NGO Impact Reporting System</CardTitle>
           <CardDescription>Log in to access the system</CardDescription>
         </CardHeader>
-        <Suspense fallback={<div>Loading form...</div>}>
+        <Suspense fallback={<div className="p-6 text-center">Loading form...</div>}>
           <LoginForm />
         </Suspense>
       </Card>

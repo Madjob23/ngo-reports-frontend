@@ -12,13 +12,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} min-h-full flex flex-col`}>
         <Navbar />
-        <main className="container mx-auto py-8 px-4">
+        <main className="container mx-auto py-4 sm:py-6 md:py-8 px-4 flex-grow">
           {children}
         </main>
-        <Toaster />
+        <Toaster closeButton />
       </body>
     </html>
   );

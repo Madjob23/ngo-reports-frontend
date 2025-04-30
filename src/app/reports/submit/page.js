@@ -13,7 +13,7 @@ export default async function SubmitReportPage() {
   const plainUser = JSON.parse(JSON.stringify(user));
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <SubmitForm user={plainUser} />
     </div>
   );

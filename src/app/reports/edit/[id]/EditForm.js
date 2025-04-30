@@ -11,7 +11,7 @@ export default function EditForm({ report, user }) {
   const router = useRouter();
   
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>View Report</CardTitle>
         <CardDescription>
@@ -19,7 +19,7 @@ export default function EditForm({ report, user }) {
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="ngoId">NGO ID</Label>
           <Input
@@ -27,6 +27,7 @@ export default function EditForm({ report, user }) {
             value={report.ngoId}
             disabled={true}
             readOnly
+            className="w-full"
           />
         </div>
         
@@ -38,6 +39,7 @@ export default function EditForm({ report, user }) {
             value={report.month}
             disabled={true}
             readOnly
+            className="w-full"
           />
         </div>
         
@@ -49,6 +51,7 @@ export default function EditForm({ report, user }) {
             value={report.peopleHelped}
             disabled={true}
             readOnly
+            className="w-full"
           />
         </div>
         
@@ -60,6 +63,7 @@ export default function EditForm({ report, user }) {
             value={report.eventsConducted}
             disabled={true}
             readOnly
+            className="w-full"
           />
         </div>
         
@@ -71,12 +75,13 @@ export default function EditForm({ report, user }) {
             value={formatCurrency(report.fundsUtilized)}
             disabled={true}
             readOnly
+            className="w-full"
           />
         </div>
       </CardContent>
       
       <CardFooter className="flex justify-center">
-        <Button type="button" variant="outline" onClick={() => router.back()} className="w-full">
+        <Button type="button" variant="outline" onClick={() => router.back()} className="w-full sm:w-auto">
           Back to Reports
         </Button>
       </CardFooter>

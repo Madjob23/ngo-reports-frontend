@@ -61,7 +61,7 @@ export default function SubmitForm({ user }) {
   };
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Submit Monthly Report</CardTitle>
         <CardDescription>
@@ -69,11 +69,12 @@ export default function SubmitForm({ user }) {
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="ngoId">NGO ID</Label>
             <Input
               id="ngoId"
+              className="w-full"
               {...register('ngoId', { required: 'NGO ID is required' })}
               disabled={user.role === 'ngo'} // NGO users can't change their ID
             />
@@ -87,6 +88,7 @@ export default function SubmitForm({ user }) {
             <Input
               id="month"
               type="month"
+              className="w-full"
               {...register('month', { required: 'Month is required' })}
             />
             {errors.month && (
@@ -100,6 +102,7 @@ export default function SubmitForm({ user }) {
               id="peopleHelped"
               type="number"
               min="0"
+              className="w-full"
               {...register('peopleHelped', { 
                 required: 'This field is required',
                 min: { value: 0, message: 'Value must be 0 or greater' },
@@ -117,6 +120,7 @@ export default function SubmitForm({ user }) {
               id="eventsConducted"
               type="number"
               min="0"
+              className="w-full"
               {...register('eventsConducted', { 
                 required: 'This field is required',
                 min: { value: 0, message: 'Value must be 0 or greater' },
@@ -135,6 +139,7 @@ export default function SubmitForm({ user }) {
               type="number"
               min="0"
               step="0.01"
+              className="w-full"
               {...register('fundsUtilized', { 
                 required: 'This field is required',
                 min: { value: 0, message: 'Value must be 0 or greater' },
@@ -146,11 +151,11 @@ export default function SubmitForm({ user }) {
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
+        <CardFooter className="flex flex-col sm:flex-row justify-between gap-3">
+          <Button type="button" variant="outline" onClick={() => router.back()} className="w-full sm:w-auto">
             Cancel
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
             {isSubmitting ? 'Submitting...' : 'Submit Report'}
           </Button>
         </CardFooter>

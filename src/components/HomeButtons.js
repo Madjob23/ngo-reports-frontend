@@ -7,7 +7,7 @@ export default function HomeButtons({ route, label }) {
   const router = useRouter();
   
   return (
-    <Button onClick={() => router.push(route)}>
+    <Button onClick={() => router.push(route)} className="w-full sm:w-auto">
       {label}
     </Button>
   );

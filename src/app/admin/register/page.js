@@ -14,7 +14,7 @@ export default async function RegisterPage() {
   }
   
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <RegisterForm />
     </div>
   );
