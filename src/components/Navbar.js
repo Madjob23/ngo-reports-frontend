@@ -53,6 +53,9 @@ const Navbar = () => {
                 <Link href="/admin/register" className={`hover:text-blue-300 ${pathname === '/admin/register' ? 'text-blue-300' : ''}`}>
                   Register User
                 </Link>
+                <Link href="/admin/users" className={`hover:text-blue-300 ${pathname === '/admin/users' ? 'text-blue-300' : ''}`}>
+                  Manage Users
+                </Link>
               </>
             )}
           </div>

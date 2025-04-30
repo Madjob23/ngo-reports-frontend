@@ -402,3 +402,84 @@ export async function getDashboardData(month = '') {
     return { success: false, message: error.message };
   }
 }
+
+// User management actions
+export async function getAllUsers() {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return { success: false, message: 'Not authenticated' };
+    }
+    
+    await connectDB();
+    
+    const currentUser = await getCurrentUser();
+    if (currentUser.role !== 'admin') {
+      return { success: false, message: 'Only admin can access user management' };
+    }
+    
+    // Get all users except the current admin (self)
+    const users = await User.find({ _id: { $ne: currentUser._id } }).select('-password');
+    
+    return {
+      success: true,
+      users: users.map(user => ({
+        _id: user._id.toString(),
+        username: user.username,
+        role: user.role,
+        ngoId: user.ngoId,
+        name: user.name,
+        createdAt: user.createdAt ? user.createdAt.toISOString() : null
+      }))
+    };
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return { success: false, message: error.message };
+  }
+}
+
+export async function deleteUser(formData) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return { success: false, message: 'Not authenticated' };
+    }
+    
+    await connectDB();
+    
+    const currentUser = await getCurrentUser();
+    if (currentUser.role !== 'admin') {
+      return { success: false, message: 'Only admin can delete users' };
+    }
+    
+    const userId = formData.get('userId');
+    if (!userId) {
+      return { success: false, message: 'User ID is required' };
+    }
+    
+    // Prevent deleting the current admin user
+    if (userId === currentUser._id.toString()) {
+      return { success: false, message: 'You cannot delete your own account' };
+    }
+    
+    // Get the user to be deleted to check role and ngoId
+    const userToDelete = await User.findById(userId);
+    if (!userToDelete) {
+      return { success: false, message: 'User not found' };
+    }
+    
+    // Delete all reports associated with the user if they are an NGO
+    if (userToDelete.role === 'ngo' && userToDelete.ngoId) {
+      await Report.deleteMany({ ngoId: userToDelete.ngoId });
+    }
+    
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+    
+    revalidatePath('/admin/users');
+    return { success: true, message: 'User and associated data deleted successfully' };
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    return { success: false, message: error.message };
+  }
+}
