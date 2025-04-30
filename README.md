@@ -6,6 +6,8 @@ A comprehensive platform for NGOs to submit and track their impact metrics. The 
 
 **Deployed Link**: [https://ngo-impact-reports.vercel.app/](https://ngo-impact-reports.vercel.app/)
 
+## [Video Demo](https://drive.google.com/file/d/1N-rz3SCNQZj6nviwFiZGjlggjJDetmEB/view?usp=drive_web)
+
 ## Tech Stack
 
 ### Frontend
@@ -32,7 +34,6 @@ A comprehensive platform for NGOs to submit and track their impact metrics. The 
 - **User Authentication**: Secure login for NGOs and administrators
 - **Role-Based Access Control**: Different permissions for NGOs and administrators
 - **Report Submission**: NGOs can submit monthly impact reports
-- **Report Management**: NGOs can edit and delete their own reports
 - **Dashboard**: Comprehensive view of aggregated impact metrics
 - **Month Filtering**: Filter reports and dashboard data by month
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
@@ -91,6 +92,11 @@ npm run seed
 # or
 yarn seed
 ```
+#### Sample user credentials (username, password)
+1. admin, admin123 (administrator)
+2. madjob, madjob1 (NGO)
+3. madjob2, madjob2 (NGO)
+4. madjob3, madjob3 (NGO)
 
 ## Deployment
 
@@ -100,7 +106,3 @@ The application is set up for easy deployment on Vercel:
 2. Connect your fork to Vercel
 3. Set up the environment variables in Vercel project settings
 4. Deploy!
-
-## License
-
-MIT
