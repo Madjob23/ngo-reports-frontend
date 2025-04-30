@@ -90,6 +90,11 @@ npm run seed
 # or
 yarn seed
 ```
+#### Sample user credentials (username, password)
+1. admin, admin123 (administrator)
+2. madjob, madjob1 (NGO)
+3. madjob2, madjob2 (NGO)
+4. madjob3, madjob3 (NGO)
 
 ## Deployment
 
